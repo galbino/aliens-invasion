@@ -7,4 +7,6 @@ type Alien struct {
 	Location string
 }
 type Game interface {
+	NewRound() bool
+	String() string
 }

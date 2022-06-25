@@ -6,13 +6,13 @@ import (
 	"github.com/galbino/alien-assignment/internal/domain"
 )
 
-type Game struct {
+type game struct {
 	cities domain.GameCities
 	aliens []domain.Alien
 	rounds int
 }
 
-func (g *Game) NewRound() bool {
+func (g *game) NewRound() bool {
 	if g.rounds == 10001 {
 		return false
 	}
@@ -20,16 +20,16 @@ func (g *Game) NewRound() bool {
 	return true
 }
 
-func NewGame(cityFile string, aliensAmount int) Game {
+func NewGame(cityFile string, aliensAmount int) domain.Game {
 	cities := NewCities(cityFile)
 	cityArray := []string{}
 	for k := range cities {
 		cityArray = append(cityArray, k)
 	}
 	aliens := NewAlien(aliensAmount, cityArray)
-	return Game{cities: cities, aliens: aliens, rounds: 0}
+	return &game{cities: cities, aliens: aliens, rounds: 0}
 }
 
-func (g Game) String() string {
+func (g game) String() string {
 	return fmt.Sprintf("%d", g.rounds)
 }
