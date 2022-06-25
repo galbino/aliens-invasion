@@ -1,10 +1,11 @@
 package domain
 
-type GameCities map[string][]string
-
-type Alien struct {
-	Name     string
-	Location string
+type Cities interface {
+	ListCities() []string
+	CityConnections(cityName string) []string
+}
+type Alien interface {
+	Location() string
 }
 type Game interface {
 	NewRound() bool

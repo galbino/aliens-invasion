@@ -7,7 +7,7 @@ import (
 )
 
 type game struct {
-	cities domain.GameCities
+	cities domain.Cities
 	aliens []domain.Alien
 	rounds int
 }
@@ -22,11 +22,7 @@ func (g *game) NewRound() bool {
 
 func NewGame(cityFile string, aliensAmount int) domain.Game {
 	cities := NewCities(cityFile)
-	cityArray := []string{}
-	for k := range cities {
-		cityArray = append(cityArray, k)
-	}
-	aliens := NewAlien(aliensAmount, cityArray)
+	aliens := NewAlien(aliensAmount, cities.ListCities())
 	return &game{cities: cities, aliens: aliens, rounds: 0}
 }
 

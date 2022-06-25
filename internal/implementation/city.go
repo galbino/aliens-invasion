@@ -10,8 +10,26 @@ import (
 	"golang.org/x/exp/slices"
 )
 
-func NewCities(cityFile string) domain.GameCities {
-	cities := domain.GameCities{}
+type cities map[string][]string
+
+func (c cities) ListCities() []string {
+	cities := []string{}
+	for k := range c {
+		cities = append(cities, k)
+	}
+	return cities
+}
+
+func (c cities) CityConnections(cityName string) []string {
+	cities := []string{}
+	for _, k := range c[cityName] {
+		cities = append(cities, k)
+	}
+	return cities
+}
+
+func NewCities(cityFile string) domain.Cities {
+	cities := cities{}
 	f, err := os.Open(cityFile)
 	if err != nil {
 		log.Fatalf("error city.go: %v", err)
