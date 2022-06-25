@@ -2,6 +2,7 @@ package implementation
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -23,9 +24,22 @@ func (c cities) ListCities() []string {
 func (c cities) CityConnections(cityName string) []string {
 	cities := []string{}
 	for _, k := range c[cityName] {
-		cities = append(cities, k)
+		cities = append(cities, strings.Split(k, "|")[0])
 	}
 	return cities
+}
+
+func (c cities) String() string {
+	resp := []string{}
+	for city := range c {
+		tmp := city
+		for _, conn := range c[city] {
+			sp := strings.Split(conn, "|")
+			tmp += fmt.Sprintf(" %s=%s", sp[1], sp[0])
+		}
+		resp = append(resp, tmp)
+	}
+	return strings.Join(resp, "\n")
 }
 
 func NewCities(cityFile string) domain.Cities {
@@ -42,16 +56,34 @@ func NewCities(cityFile string) domain.Cities {
 		city := dataSplitted[0]
 		cities[city] = []string{}
 		for _, conn := range dataSplitted[1:] {
-			leadingCity := strings.Split(conn, "=")[1]
-			cities[city] = append(cities[city], leadingCity)
+			cityData := strings.Split(conn, "=")
+			location := cityData[0]
+			leadingCity := cityData[1]
+			cities[city] = append(cities[city], fmt.Sprintf("%s|%s", leadingCity, location))
 			if _, ok := cities[leadingCity]; !ok {
-				cities[leadingCity] = []string{city}
+				cities[leadingCity] = []string{fmt.Sprintf("%s|%s", city, InvertSides(location))}
 			} else {
 				if !slices.Contains(cities[leadingCity], city) {
-					cities[leadingCity] = append(cities[leadingCity], city)
+					cities[leadingCity] = append(cities[leadingCity], fmt.Sprintf("%s|%s", city, InvertSides(location)))
 				}
 			}
 		}
 	}
 	return cities
+}
+
+func InvertSides(side string) string {
+	switch side {
+	case "north":
+		return "south"
+	case "south":
+		return "north"
+	case "east":
+		return "west"
+	case "west":
+		return "east"
+	default:
+		log.Fatal("Side doesn't exist.")
+	}
+	return ""
 }

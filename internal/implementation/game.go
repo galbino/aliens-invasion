@@ -16,6 +16,9 @@ func (g *game) NewRound() bool {
 	if g.rounds == 10001 {
 		return false
 	}
+	for _, alien := range g.aliens {
+		alien.Walk(g.cities)
+	}
 	g.rounds += 1
 	return true
 }
@@ -27,5 +30,5 @@ func NewGame(cityFile string, aliensAmount int) domain.Game {
 }
 
 func (g game) String() string {
-	return fmt.Sprintf("%d", g.rounds)
+	return fmt.Sprintf("%s", g.cities)
 }
