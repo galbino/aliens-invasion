@@ -13,12 +13,12 @@ type game struct {
 }
 
 func (g *game) NewRound() bool {
+	g.checkAliens()
 	if g.checkState() {
 		for i := 0; i < len(g.aliens); i++ {
 			alien := g.aliens[i]
 			alien.Walk(g.cities)
 		}
-		g.checkAliens()
 		g.rounds += 1
 		return true
 	}

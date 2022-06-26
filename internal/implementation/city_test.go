@@ -35,3 +35,41 @@ func Test_NewCity(t *testing.T) {
 		t.Errorf("Qu-ux created wrong, want: %s, got: %s", qu, cityInt.CityConnections("Qu-ux"))
 	}
 }
+
+func Test_DestroyCity(t *testing.T) {
+	foo := []string{"Baz", "Qu-ux"}
+	bee := []string{}
+	cities := NewCities("../../cities_test")
+	cities.DestroyCity("Bar")
+	if !reflect.DeepEqual(cities.CityConnections("Bee"), bee) {
+		t.Errorf("Bee created wrong, want: %s, got: %s", bee, cities.CityConnections("Bee"))
+	}
+	if !reflect.DeepEqual(cities.CityConnections("Foo"), foo) {
+		t.Errorf("Foo created wrong, want: %s, got: %s", foo, cities.CityConnections("Foo"))
+	}
+}
+
+func Test_String(t *testing.T) {
+	exp := "Foo north=Bar west=Baz south=Qu-ux\nBar south=Foo west=Bee\nBaz east=Foo\nQu-ux north=Foo\nBee east=Bar"
+	cities := NewCities("../../cities_test")
+	if cities.String() != exp {
+		t.Errorf("Printed wrong, want: %s, got: %s", exp, cities.String())
+	}
+}
+
+func Test_ListCities(t *testing.T) {
+	cities := NewCities("../../cities_test")
+	cityList := []string{"Bee", "Foo", "Bar", "Baz", "Qu-ux"}
+	for _, city := range cityList {
+		found := false
+		for _, cityCreated := range cities.ListCities() {
+			if city == cityCreated {
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Errorf("Listed cities wrongly, want: %s, got: %s", cityList, cities.ListCities())
+		}
+	}
+}

@@ -14,9 +14,11 @@ import (
 type cities map[string][]string
 
 func (c cities) ListCities() []string {
-	cities := []string{}
+	cities := make([]string, len(c))
+	i := 0
 	for k := range c {
-		cities = append(cities, k)
+		cities[i] = k
+		i++
 	}
 	return cities
 }
@@ -43,24 +45,15 @@ func (c cities) String() string {
 }
 
 func (c cities) DestroyCity(cityName string) {
-	for _, conn := range c[cityName] {
-		cityData := strings.Split(conn, "|")
-		direction := cityData[1]
-		cityDestiny := cityData[0]
-		toDelete := fmt.Sprintf("%s|%s", cityName, InvertSides(direction))
-		for ind, connections := range c[cityDestiny] {
-			if connections == toDelete {
-				if len(c[cityDestiny]) == 1 {
-					c[cityDestiny] = c[cityDestiny][:0]
-				} else if ind == len(c[cityDestiny])-1 {
-					c[cityDestiny] = c[cityDestiny][ind:]
-				} else {
-					c[cityDestiny] = append(c[cityDestiny][:ind], c[cityDestiny][ind+1:]...)
-				}
+	delete(c, cityName)
+	for key := range c {
+		for ind, conn := range c[key] {
+			if strings.Contains(conn, cityName) {
+				c[key] = slices.Delete(c[key], ind, ind+1)
+				break
 			}
 		}
 	}
-	delete(c, cityName)
 }
 
 func NewCities(cityFile string) domain.Cities {
