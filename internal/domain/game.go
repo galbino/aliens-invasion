@@ -7,8 +7,10 @@ type Cities interface {
 	ListCities() []string
 	CityConnections(cityName string) []string
 	String() string
+	DestroyCity(cityName string)
 }
 type Alien interface {
+	Name() int
 	Location() string
 	Walk(cities Cities)
 	String() string
@@ -16,4 +18,5 @@ type Alien interface {
 type Game interface {
 	NewRound() bool
 	String() string
+	CountAliens() int
 }

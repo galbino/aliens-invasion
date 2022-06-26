@@ -33,6 +33,20 @@ func (m *MockGame) EXPECT() *MockGameMockRecorder {
 	return m.recorder
 }
 
+// CountAliens mocks base method.
+func (m *MockGame) CountAliens() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CountAliens")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// CountAliens indicates an expected call of CountAliens.
+func (mr *MockGameMockRecorder) CountAliens() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CountAliens", reflect.TypeOf((*MockGame)(nil).CountAliens))
+}
+
 // NewRound mocks base method.
 func (m *MockGame) NewRound() bool {
 	m.ctrl.T.Helper()

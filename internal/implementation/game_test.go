@@ -9,13 +9,17 @@ import (
 )
 
 func Test_NewRound(t *testing.T) {
-	game := NewGame("cities_test", 1)
-	game.NewRound()
-	destination := []string{"Bar"}
+	dest := "Bar"
+	destination := []string{dest}
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	cities := mocks.NewMockCities(ctrl)
-	aliens := mocks.NewMockAlien(ctrl)
-	cities.EXPECT().CityConnections(gomock.Any()).Return(destination)
-	aliens.EXPECT().Location().Return(destination)
+	cities.EXPECT().CityConnections(gomock.Any()).Return(destination).AnyTimes()
+	cities.EXPECT().ListCities().Return(destination)
+	cities.EXPECT().DestroyCity(gomock.Any()).Times(1)
+	game := NewGame(cities, 2)
+	game.NewRound()
+	if game.NewRound() != false {
+		t.Errorf("Aliens werent killed by each other, want: %d aliens, got: %d aliens", 0, game.CountAliens())
+	}
 }

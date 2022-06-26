@@ -48,6 +48,20 @@ func (mr *MockAlienMockRecorder) Location() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Location", reflect.TypeOf((*MockAlien)(nil).Location))
 }
 
+// Name mocks base method.
+func (m *MockAlien) Name() int {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Name")
+	ret0, _ := ret[0].(int)
+	return ret0
+}
+
+// Name indicates an expected call of Name.
+func (mr *MockAlienMockRecorder) Name() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Name", reflect.TypeOf((*MockAlien)(nil).Name))
+}
+
 // String mocks base method.
 func (m *MockAlien) String() string {
 	m.ctrl.T.Helper()

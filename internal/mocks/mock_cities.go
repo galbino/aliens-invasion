@@ -47,6 +47,18 @@ func (mr *MockCitiesMockRecorder) CityConnections(arg0 interface{}) *gomock.Call
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CityConnections", reflect.TypeOf((*MockCities)(nil).CityConnections), arg0)
 }
 
+// DestroyCity mocks base method.
+func (m *MockCities) DestroyCity(arg0 string) {
+	m.ctrl.T.Helper()
+	m.ctrl.Call(m, "DestroyCity", arg0)
+}
+
+// DestroyCity indicates an expected call of DestroyCity.
+func (mr *MockCitiesMockRecorder) DestroyCity(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DestroyCity", reflect.TypeOf((*MockCities)(nil).DestroyCity), arg0)
+}
+
 // ListCities mocks base method.
 func (m *MockCities) ListCities() []string {
 	m.ctrl.T.Helper()

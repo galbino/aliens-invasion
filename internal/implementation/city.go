@@ -42,6 +42,27 @@ func (c cities) String() string {
 	return strings.Join(resp, "\n")
 }
 
+func (c cities) DestroyCity(cityName string) {
+	for _, conn := range c[cityName] {
+		cityData := strings.Split(conn, "|")
+		direction := cityData[1]
+		cityDestiny := cityData[0]
+		toDelete := fmt.Sprintf("%s|%s", cityName, InvertSides(direction))
+		for ind, connections := range c[cityDestiny] {
+			if connections == toDelete {
+				if len(c[cityDestiny]) == 1 {
+					c[cityDestiny] = c[cityDestiny][:0]
+				} else if ind == len(c[cityDestiny])-1 {
+					c[cityDestiny] = c[cityDestiny][ind:]
+				} else {
+					c[cityDestiny] = append(c[cityDestiny][:ind], c[cityDestiny][ind+1:]...)
+				}
+			}
+		}
+	}
+	delete(c, cityName)
+}
+
 func NewCities(cityFile string) domain.Cities {
 	cities := cities{}
 	f, err := os.Open(cityFile)
@@ -59,17 +80,19 @@ func NewCities(cityFile string) domain.Cities {
 			cityData := strings.Split(conn, "=")
 			location := cityData[0]
 			leadingCity := cityData[1]
-			cities[city] = append(cities[city], fmt.Sprintf("%s|%s", leadingCity, location))
+			if !slices.Contains(cities[city], leadingCity) {
+				cities[city] = append(cities[city], fmt.Sprintf("%s|%s", leadingCity, location))
+			}
 			if _, ok := cities[leadingCity]; !ok {
 				cities[leadingCity] = []string{fmt.Sprintf("%s|%s", city, InvertSides(location))}
 			} else {
-				if !slices.Contains(cities[leadingCity], city) {
+				if !slices.Contains(cities[leadingCity], fmt.Sprintf("%s|%s", city, InvertSides(location))) {
 					cities[leadingCity] = append(cities[leadingCity], fmt.Sprintf("%s|%s", city, InvertSides(location)))
 				}
 			}
 		}
 	}
-	return cities
+	return &cities
 }
 
 func InvertSides(side string) string {
