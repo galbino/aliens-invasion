@@ -24,6 +24,7 @@ func (a alien) String() string {
 	return fmt.Sprintf("%d - %s", a.name, a.location)
 }
 
+// Function to choose where the alien will walk to
 func (a *alien) Walk(cities domain.Cities) {
 	connectionList := cities.CityConnections(a.location)
 	if len(connectionList) > 0 {

@@ -23,6 +23,7 @@ func (c cities) ListCities() []string {
 	return cities
 }
 
+// Getting all connections from one city, excluding the direction
 func (c cities) CityConnections(cityName string) []string {
 	cities := []string{}
 	for _, k := range c[cityName] {
@@ -31,6 +32,7 @@ func (c cities) CityConnections(cityName string) []string {
 	return cities
 }
 
+// Function to facilitate printing the final result on screen
 func (c cities) String() string {
 	resp := []string{}
 	for city := range c {
@@ -44,6 +46,7 @@ func (c cities) String() string {
 	return strings.Join(resp, "\n")
 }
 
+// Function to delete a city from the list and all connections to it
 func (c cities) DestroyCity(cityName string) {
 	delete(c, cityName)
 	for key := range c {

@@ -12,6 +12,7 @@ type game struct {
 	rounds int
 }
 
+// Main game function
 func (g *game) NewRound() bool {
 	g.checkAliens()
 	if g.checkState() {
@@ -25,6 +26,7 @@ func (g *game) NewRound() bool {
 	return false
 }
 
+// Function to check if the game should proceed or not. It won't proceed if it gets to the round 10001 or if there is no more aliens
 func (g game) checkState() bool {
 	if g.rounds == 10001 || len(g.aliens) == 0 {
 		return false
@@ -32,6 +34,7 @@ func (g game) checkState() bool {
 	return true
 }
 
+// Function to check if there are aliens ocuppying the same spot, if there is, all the aliens on that spot along with the city will be removed
 func (g *game) checkAliens() {
 	locations := map[string][]int{}
 	for _, alien := range g.aliens {
