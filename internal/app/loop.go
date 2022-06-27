@@ -7,7 +7,8 @@ import (
 )
 
 func GameLoop(cityFile string, amount int) {
-	game := implementation.NewGame(cityFile, amount)
+	cities := implementation.NewCities(cityFile)
+	game := implementation.NewGame(cities, amount)
 	for game.NewRound() {
 		continue
 	}

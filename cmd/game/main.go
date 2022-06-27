@@ -8,6 +8,6 @@ import (
 
 func main() {
 	cityFile := flag.String("input", "cities", "the name of city input file")
-	aliens := flag.Int("n", 10, "the amount of aliens to be spawned")
+	aliens := flag.Int("n", 2, "the amount of aliens to be spawned")
 	app.GameLoop(*cityFile, *aliens)
 }
